@@ -97,7 +97,11 @@ SLACKEOF
 slack_send "$MSG"
 ```
 
-## Step 6: Save State
+## Step 6: Backup Digest
+
+Save the formatted Slack message to `digest/YYYY-MM-DD/digest.md` as a local backup. Create the daily sub-folder if it doesn't exist.
+
+## Step 7: Save State
 
 Write `.state/last-digest.json` with this structure:
 
@@ -112,6 +116,14 @@ Write `.state/last-digest.json` with this structure:
 ```
 
 Only keep URLs from the current and previous digest (max 30 URLs) to prevent the file from growing indefinitely.
+
+## Step 8: Slack Notification
+
+After completing all steps, send a brief Slack notification confirming the digest was posted successfully:
+```bash
+source scripts/slack_notify.sh
+WEBHOOK=$(grep SLACK_WEBHOOK_URL .env 2>/dev/null | cut -d'"' -f2)
+```
 
 ## Error Handling
 

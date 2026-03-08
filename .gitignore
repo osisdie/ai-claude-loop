@@ -92,3 +92,6 @@ __pycache__/
 
 # Digest state (dedup tracking)
 .state/
+
+# Digest backups (local archives)
+digest/
