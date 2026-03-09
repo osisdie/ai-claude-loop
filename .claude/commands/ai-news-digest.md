@@ -38,7 +38,15 @@ Run WebSearch for each of the following 6 categories, using 2 queries per catego
 
 ## Step 2: Fetch & Verify Article Freshness
 
-From the search results, identify the top 3-4 candidate URLs per category. Use WebFetch with this specific prompt to extract freshness signals:
+From the search results, identify the top 3-4 candidate URLs per category.
+
+**URL pre-screening — SKIP these without fetching (they waste time and are never fresh news):**
+- Monthly/weekly roundup pages (URL contains "monthly-digest", "weekly-roundup", "complete-digest", "best-of")
+- Listicles and buyer's guides (URL contains "top-10", "best-ai-tools", "comparison", "guide")
+- Evergreen content (URL contains "what-is", "how-to", "explained", "tutorial")
+- Aggregator homepages that list many articles (prefer fetching the individual article URL instead)
+
+Use WebFetch with this specific prompt to extract freshness signals:
 
 ```
 Extract from this article:
