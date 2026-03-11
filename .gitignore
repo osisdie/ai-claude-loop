@@ -94,4 +94,5 @@ __pycache__/
 .state/
 
 # Digest backups (local archives)
-digest/
+digest-news/
+digest-yt/

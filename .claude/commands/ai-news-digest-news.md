@@ -69,7 +69,7 @@ After filtering, keep the top 2 freshest articles per category.
 
 ## Step 3: Deduplication
 
-Read the file `.state/last-digest.json` (if it exists) and check for previously posted URLs. Skip any articles that were already posted in the last digest.
+Read the file `.state/last-digest-news.json` (if it exists) and check for previously posted URLs. Skip any articles that were already posted in the last digest.
 
 Also skip articles that cover the same story as a previously posted article (same event, different URL). Use your judgment to identify duplicate stories by comparing titles and summaries.
 
@@ -134,11 +134,11 @@ slack_send "$MSG"
 
 ## Step 6: Backup Digest
 
-Save the formatted Slack message to `digest/YYYY-MM-DD/digest.md` as a local backup. Create the daily sub-folder if it doesn't exist.
+Save the formatted Slack message to `digest-news/YYYY-MM-DD/digest.md` as a local backup. Create the daily sub-folder if it doesn't exist.
 
 ## Step 7: Save State
 
-Write `.state/last-digest.json` with this structure:
+Write `.state/last-digest-news.json` with this structure:
 
 ```json
 {
