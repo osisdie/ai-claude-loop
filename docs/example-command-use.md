@@ -1,7 +1,7 @@
 # command
 
 ```
-/ai-news-digest
+/ai-news-digest-news
 ```
 
 ● ★ Insight ─────────────────────────────────────
@@ -63,7 +63,7 @@
   ─────────────────────────────────────────────────
 
 Digest posted successfully to Slack. Now saving the dedup state.
-  ⎿  Wrote 17 lines to /mnt/c/writable/git/nwpie/AIProjects/ai-claude-loop/.state/last-digest.json
+  ⎿  Wrote 17 lines to /mnt/c/writable/git/nwpie/AIProjects/ai-claude-loop/.state/last-digest-news.json
        1 {
        2   "last_run": "2026-03-08T00:00:00Z",
        3   "posted_urls": [
@@ -101,7 +101,7 @@ Digest posted successfully to Slack. Now saving the dedup state.
   ├───────────────────────────┼───────────────────────────────────────────────┤
   │ 5. Post to Slack          │ Posted to #update-vibe                        │
   ├───────────────────────────┼───────────────────────────────────────────────┤
-  │ 6. Save state             │ 12 URLs saved to .state/last-digest.json      │
+  │ 6. Save state             │ 12 URLs saved to .state/last-digest-news.json │
   └───────────────────────────┴───────────────────────────────────────────────┘
 
   Today's highlights:
