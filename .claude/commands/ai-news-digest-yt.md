@@ -34,6 +34,21 @@ python scripts/yt/get_transcript.py VIDEO_ID
 
 Capture the stdout output as the transcript text. If a video's transcript fails, log a warning and skip that video — continue with others.
 
+## Step 2.5: Download Thumbnails
+
+For each video, download the YouTube thumbnail to the digest directory:
+
+```bash
+curl -sL "THUMBNAIL_URL" -o "digest-yt/{{date}}/VIDEO_ID_thumb.jpg"
+```
+
+The `thumbnail` field from Step 1's JSON output contains the URL. If missing, fall back to:
+```
+https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg
+```
+
+If a thumbnail download fails, continue without it — the summary will just lack an image.
+
 ## Step 3: Summarize (Claude does this)
 
 For each video with a successful transcript, YOU (Claude) will:
@@ -48,6 +63,8 @@ For each video with a successful transcript, YOU (Claude) will:
 ```markdown
 # Video Title
 
+![Video Title](VIDEO_ID_thumb.jpg)
+
 **Source**: [AI Daily Brief](https://youtube.com/watch?v=VIDEO_ID)
 **Date**: {{date}}
 
@@ -60,16 +77,20 @@ For each video with a successful transcript, YOU (Claude) will:
 繁體中文摘要，2-3句話...
 ```
 
-4. Also create two combined digest files:
+4. Also create two combined digest files. **Each video section MUST include its thumbnail image** (use relative path). If the thumbnail file doesn't exist, omit the image line for that video.
 
 **`digest-yt/{{date}}/summary_en.md`** — All English summaries combined:
 ```markdown
 # AI Daily Brief - YouTube Digest {{date}}
 
 ## Video Title 1
+![Video Title 1](VIDEO_ID_thumb.jpg)
+
 2-3 sentence English summary...
 
 ## Video Title 2
+![Video Title 2](VIDEO_ID_thumb.jpg)
+
 2-3 sentence English summary...
 ```
 
@@ -78,9 +99,13 @@ For each video with a successful transcript, YOU (Claude) will:
 # AI Daily Brief - YouTube 摘要 {{date}}
 
 ## Video Title 1
+![Video Title 1](VIDEO_ID_thumb.jpg)
+
 繁體中文摘要...
 
 ## Video Title 2
+![Video Title 2](VIDEO_ID_thumb.jpg)
+
 繁體中文摘要...
 ```
 
