@@ -64,6 +64,18 @@ HTML_TEMPLATE = """\
     background: #f8fafc;
     color: #374151;
   }}
+  img {{
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }}
+  .video-thumbnail {{
+    display: block;
+    max-width: 640px;
+    margin: 0.5rem auto 1.5rem;
+  }}
   .footer {{
     text-align: center;
     color: #9ca3af;

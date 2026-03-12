@@ -27,7 +27,7 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
     cmd = [
         "yt-dlp",
         "--playlist-items", f"1:{max_items}",
-        "--print", "%(id)s\t%(title)s\t%(upload_date)s",
+        "--print", "%(id)s\t%(title)s\t%(upload_date)s\t%(thumbnail)s",
         "--skip-download",
         f"{channel_url}/videos",
     ]
@@ -38,12 +38,15 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
 
     videos = []
     for line in result.stdout.strip().splitlines():
-        parts = line.split("\t", 2)
+        parts = line.split("\t", 3)
         if len(parts) >= 2:
+            vid_id = parts[0]
             vid = {
-                "id": parts[0],
+                "id": vid_id,
                 "title": parts[1],
-                "upload_date": parts[2] if len(parts) == 3 else "NA",
+                "upload_date": parts[2] if len(parts) >= 3 else "NA",
+                "thumbnail": parts[3] if len(parts) >= 4 and parts[3] != "NA"
+                    else f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg",
             }
             videos.append(vid)
     return videos
