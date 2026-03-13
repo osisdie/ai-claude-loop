@@ -21,6 +21,7 @@ from pathlib import Path
 # Try to load .env
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
@@ -34,11 +35,20 @@ def download_subtitles(video_url: str, out_dir: Path, lang: str = "en") -> Path 
     # Try manual subs first
     subprocess.run(
         [
-            "yt-dlp", "--write-subs", "--sub-lang", lang,
-            "--sub-format", "srt", "--skip-download",
-            "-o", str(out_dir / "video"), video_url,
+            "yt-dlp",
+            "--write-subs",
+            "--sub-lang",
+            lang,
+            "--sub-format",
+            "srt",
+            "--skip-download",
+            "-o",
+            str(out_dir / "video"),
+            video_url,
         ],
-        capture_output=True, text=True, timeout=60,
+        capture_output=True,
+        text=True,
+        timeout=60,
     )
     if srt_path.exists() and srt_path.stat().st_size > 0:
         return srt_path
@@ -46,11 +56,20 @@ def download_subtitles(video_url: str, out_dir: Path, lang: str = "en") -> Path 
     # Try auto-generated subs
     subprocess.run(
         [
-            "yt-dlp", "--write-auto-subs", "--sub-lang", lang,
-            "--sub-format", "srt", "--skip-download",
-            "-o", str(out_dir / "video"), video_url,
+            "yt-dlp",
+            "--write-auto-subs",
+            "--sub-lang",
+            lang,
+            "--sub-format",
+            "srt",
+            "--skip-download",
+            "-o",
+            str(out_dir / "video"),
+            video_url,
         ],
-        capture_output=True, text=True, timeout=60,
+        capture_output=True,
+        text=True,
+        timeout=60,
     )
     if srt_path.exists() and srt_path.stat().st_size > 0:
         return srt_path
@@ -85,11 +104,19 @@ def whisper_transcribe_hf(video_url: str, out_dir: Path) -> str | None:
     audio_path = out_dir / "audio.m4a"
     subprocess.run(
         [
-            "yt-dlp", "-f", "worstaudio[ext=m4a]/worstaudio",
-            "--extract-audio", "--audio-format", "m4a",
-            "-o", str(audio_path), video_url,
+            "yt-dlp",
+            "-f",
+            "worstaudio[ext=m4a]/worstaudio",
+            "--extract-audio",
+            "--audio-format",
+            "m4a",
+            "-o",
+            str(audio_path),
+            video_url,
         ],
-        capture_output=True, text=True, timeout=300,
+        capture_output=True,
+        text=True,
+        timeout=300,
     )
     if not audio_path.exists():
         # Check for alternative extensions
@@ -103,8 +130,20 @@ def whisper_transcribe_hf(video_url: str, out_dir: Path) -> str | None:
     # Convert to wav for HF API
     wav_path = out_dir / "audio.wav"
     subprocess.run(
-        ["ffmpeg", "-i", str(audio_path), "-ar", "16000", "-ac", "1", "-y", str(wav_path)],
-        capture_output=True, text=True, timeout=300,
+        [
+            "ffmpeg",
+            "-i",
+            str(audio_path),
+            "-ar",
+            "16000",
+            "-ac",
+            "1",
+            "-y",
+            str(wav_path),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=300,
     )
     if not wav_path.exists():
         print("FFmpeg conversion failed", file=sys.stderr)
@@ -112,6 +151,7 @@ def whisper_transcribe_hf(video_url: str, out_dir: Path) -> str | None:
 
     try:
         from huggingface_hub import InferenceClient
+
         client = InferenceClient(token=hf_token)
         result = client.automatic_speech_recognition(
             str(wav_path),

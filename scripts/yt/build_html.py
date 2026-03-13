@@ -103,6 +103,7 @@ def build_html(md_path: Path, title: str = "", lang: str = "en") -> str:
     if not title:
         first_line = md_text.split("\n")[0]
         import re
+
         title = re.sub(r"^#+\s*", "", first_line).strip() or md_path.stem
 
     lang_attr = "zh-Hant" if "zh" in lang else "en"

@@ -103,7 +103,7 @@ slack_send() {
       local payload resp ok
       payload=$(printf '{"channel":"%s","text":"%s"}' \
         "$SLACK_CHANNEL_ID" \
-        "$(echo "$msg" | sed 's/"/\\"/g')")
+        "${msg//\"/\\\"}")
 
       resp=$(curl -s -X POST \
         -H "Authorization: Bearer ${SLACK_BOT_TOKEN}" \
@@ -122,7 +122,7 @@ slack_send() {
 
     webhook)
       local payload
-      payload=$(printf '{"text":"%s"}' "$(echo "$msg" | sed 's/"/\\"/g')")
+      payload=$(printf '{"text":"%s"}' "${msg//\"/\\\"}")
       curl -s -X POST \
         -H 'Content-type: application/json' \
         -d "$payload" \
@@ -144,19 +144,21 @@ slack_send() {
 # Returns: 0 on success (sets _SLACK_LAST_THREAD_TS), 1 on failure
 slack_ask() {
   local question="${1:?Usage: slack_ask \"question\"}"
-  local req_id="REQ-$(date +%s)"
+  local req_id
+  req_id="REQ-$(date +%s)"
   local project_name
   project_name=$(basename "$(pwd)")
 
   case "${_SLACK_MODE:-}" in
     bot)
-      local msg payload resp ok ts
+      local msg payload resp ok
+      # shellcheck disable=SC2016 # %s placeholders are printf args, not shell expansions
       msg=$(printf ':question: *[%s] Approval Request*\n`[%s]`\n\n%s\n\n_Reply in this thread to respond._' \
         "$project_name" "$req_id" "$question")
 
       payload=$(printf '{"channel":"%s","text":"%s","unfurl_links":false}' \
         "$SLACK_CHANNEL_ID" \
-        "$(echo "$msg" | sed 's/"/\\"/g')")
+        "${msg//\"/\\\"}")
 
       resp=$(curl -s -X POST \
         -H "Authorization: Bearer ${SLACK_BOT_TOKEN}" \
@@ -180,7 +182,7 @@ slack_ask() {
       local msg payload
       msg=$(printf '[%s] Approval Request [%s]: %s (webhook mode — reply not monitored)' \
         "$project_name" "$req_id" "$question")
-      payload=$(printf '{"text":"%s"}' "$(echo "$msg" | sed 's/"/\\"/g')")
+      payload=$(printf '{"text":"%s"}' "${msg//\"/\\\"}")
       curl -s -X POST \
         -H 'Content-type: application/json' \
         -d "$payload" \
@@ -224,7 +226,7 @@ slack_wait_reply() {
   echo "[slack] Waiting for reply (timeout: ${timeout}s, polling every ${interval}s)..." >&2
 
   while (( elapsed < timeout )); do
-    local resp replies reply_text reply_user
+    local resp reply_text
     resp=$(curl -s -H "Authorization: Bearer ${SLACK_BOT_TOKEN}" \
       "https://slack.com/api/conversations.replies?channel=${SLACK_CHANNEL_ID}&ts=${_SLACK_LAST_THREAD_TS}" \
       2>/dev/null)
