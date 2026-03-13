@@ -20,6 +20,7 @@ from pathlib import Path
 # Try to load .env
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
@@ -32,7 +33,9 @@ def _b2_cmd() -> list[str]:
     # b2 v1.3.8 installed in system python without a CLI entrypoint
     for py in ["/usr/bin/python3", "python3", "python"]:
         if shutil.which(py):
-            r = subprocess.run([py, "-m", "b2", "version"], capture_output=True, text=True)
+            r = subprocess.run(
+                [py, "-m", "b2", "version"], capture_output=True, text=True
+            )
             if r.returncode == 0:
                 return [py, "-m", "b2"]
     return ["b2"]  # let it fail with a clear error
@@ -48,7 +51,9 @@ def authorize_b2() -> bool:
 
     result = subprocess.run(
         [*_b2_cmd(), "authorize-account", key_id, app_key],
-        capture_output=True, text=True, timeout=30,
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     if result.returncode != 0:
         print(f"b2 authorize-account failed: {result.stderr[:300]}", file=sys.stderr)
@@ -65,7 +70,9 @@ def upload_file(local_path: Path, b2_path: str, duration: int = 604800) -> str |
 
     result = subprocess.run(
         [*_b2_cmd(), "upload-file", bucket, str(local_path), b2_path],
-        capture_output=True, text=True, timeout=120,
+        capture_output=True,
+        text=True,
+        timeout=120,
     )
     if result.returncode != 0:
         print(f"b2 upload-file failed: {result.stderr[:300]}", file=sys.stderr)
@@ -75,17 +82,26 @@ def upload_file(local_path: Path, b2_path: str, duration: int = 604800) -> str |
     return _get_presigned_url(bucket, b2_path, duration)
 
 
-def _get_presigned_url(
-    bucket: str, b2_path: str, duration: int = 604800
-) -> str | None:
+def _get_presigned_url(bucket: str, b2_path: str, duration: int = 604800) -> str | None:
     """Get a presigned download URL. Default duration: 7 days (604800s)."""
     result = subprocess.run(
-        [*_b2_cmd(), "get-download-url-with-auth", "--duration", str(duration),
-         bucket, b2_path],
-        capture_output=True, text=True, timeout=30,
+        [
+            *_b2_cmd(),
+            "get-download-url-with-auth",
+            "--duration",
+            str(duration),
+            bucket,
+            b2_path,
+        ],
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     if result.returncode != 0:
-        print(f"b2 get-download-url-with-auth failed: {result.stderr[:300]}", file=sys.stderr)
+        print(
+            f"b2 get-download-url-with-auth failed: {result.stderr[:300]}",
+            file=sys.stderr,
+        )
         # Fallback to direct URL (will 401 on private buckets)
         return f"https://f005.backblazeb2.com/file/{bucket}/{b2_path}"
 
@@ -115,7 +131,7 @@ def main():
 
     b2_path = f"{args.prefix}/{local_path.name}"
 
-    print(f"Authorizing B2...", file=sys.stderr)
+    print("Authorizing B2...", file=sys.stderr)
     if not authorize_b2():
         sys.exit(1)
 
