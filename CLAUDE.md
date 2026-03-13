@@ -63,6 +63,9 @@ digest-yt/YYYY-MM-DD/                  — Local output (gitignored)
 ## State Tracking
 
 - `.state/last-digest-news.json` tracks posted URLs for deduplication (news digest)
-- `.state/last-digest-yt.json` tracks posted video IDs for deduplication (YT digest)
+- `.state/last-digest-yt.json` tracks posted video IDs + per-video step completion for deduplication and resume (YT digest)
+  - `posted_video_ids`: videos fully completed (all steps including slack_post)
+  - `video_status`: per-video step booleans (transcript, thumbnail, summary, html, pdf, b2_upload, slack_post) — enables resume on partial failure
+  - Incomplete videos stay in `video_status` but NOT in `posted_video_ids` → re-fetched on retry
 - Keep max 30 entries (current + previous digest)
 - State directory is gitignored
