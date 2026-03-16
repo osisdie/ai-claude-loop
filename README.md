@@ -103,12 +103,12 @@ digest-yt/YYYY-MM-DD/           — YT digest outputs (gitignored)
 
 | Emoji | Category |
 |-------|----------|
-| :brain: | LLM / Foundation Models |
-| :package: | AI Products & Applications |
-| :scales: | AI Policy & Regulation |
-| :microscope: | AI Research Papers |
-| :briefcase: | Industry & Business |
-| :unlock: | Open Source AI |
+| 🧠 | LLM / Foundation Models |
+| 📦 | AI Products & Applications |
+| ⚖️ | AI Policy & Regulation |
+| 🔬 | AI Research Papers |
+| 💼 | Industry & Business |
+| 🔓 | Open Source AI |
 
 ## Limitations
 
