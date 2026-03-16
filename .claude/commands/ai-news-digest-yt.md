@@ -70,14 +70,15 @@ For each video with a successful transcript, YOU (Claude) will:
    - **English summary**: 2-3 sentences covering the key points
    - **繁體中文摘要**: 2-3 sentences in Traditional Chinese covering the same points
 
-3. Save each summary as markdown to `digest-yt/{{date}}/VIDEO_ID.md` with this format. Convert `upload_date` from YYYYMMDD → YYYY-MM-DD for display. Only include the **Last Modified** line if `modified_date` is present and different from `upload_date`:
+3. Save each summary as markdown to `digest-yt/{{date}}/VIDEO_ID.md` with this format. Convert `upload_date` from YYYYMMDD → YYYY-MM-DD for display. Use `uploader` from fetch output for the **Publisher** field (fall back to "AI Daily Brief" if null). Only include the **Last Modified** line if `modified_date` is present and different from `upload_date`:
 
 ```markdown
 # Video Title
 
 ![Video Title](VIDEO_ID_thumb.jpg)
 
-**Source**: [AI Daily Brief](https://youtube.com/watch?v=VIDEO_ID)
+**Publisher**: Uploader Name
+**Source**: [Watch on YouTube](https://youtube.com/watch?v=VIDEO_ID)
 **Published**: 2026-03-12
 **Last Modified**: 2026-03-13
 
@@ -92,36 +93,36 @@ For each video with a successful transcript, YOU (Claude) will:
 
 4. Also create two combined digest files. **Each video section MUST include its thumbnail image** (use relative path). If the thumbnail file doesn't exist, omit the image line for that video.
 
-**`digest-yt/{{date}}/summary_en.md`** — All English summaries combined. Include `*Published: YYYY-MM-DD*` (and `| Modified: YYYY-MM-DD` only when `modified_date` is present) below each video heading:
+**`digest-yt/{{date}}/summary_en.md`** — All English summaries combined. Include publisher and date metadata below each video heading:
 ```markdown
 # AI Daily Brief - YouTube Digest {{date}}
 
 ## Video Title 1
 ![Video Title 1](VIDEO_ID_thumb.jpg)
-*Published: 2026-03-12 | Modified: 2026-03-13*
+*Uploader Name — Published: 2026-03-12 | Modified: 2026-03-13*
 
 2-3 sentence English summary...
 
 ## Video Title 2
 ![Video Title 2](VIDEO_ID_thumb.jpg)
-*Published: 2026-03-12*
+*Uploader Name — Published: 2026-03-12*
 
 2-3 sentence English summary...
 ```
 
-**`digest-yt/{{date}}/summary_zh-tw.md`** — All zh-TW summaries combined, same date format:
+**`digest-yt/{{date}}/summary_zh-tw.md`** — All zh-TW summaries combined, same format:
 ```markdown
 # AI Daily Brief - YouTube 摘要 {{date}}
 
 ## Video Title 1
 ![Video Title 1](VIDEO_ID_thumb.jpg)
-*Published: 2026-03-12 | Modified: 2026-03-13*
+*Uploader Name — Published: 2026-03-12 | Modified: 2026-03-13*
 
 繁體中文摘要...
 
 ## Video Title 2
 ![Video Title 2](VIDEO_ID_thumb.jpg)
-*Published: 2026-03-12*
+*Uploader Name — Published: 2026-03-12*
 
 繁體中文摘要...
 ```
@@ -174,6 +175,7 @@ Build a Slack mrkdwn message and post it. Use this exact format:
 
 *:movie_camera: Video Title Here*
 > :link: <https://youtube.com/watch?v=VIDEO_ID|Watch on YouTube>
+> :studio_microphone: Uploader Name · :calendar: 2026-03-15
 >
 > :us: 2-3 sentence English summary...
 >
@@ -224,6 +226,8 @@ Write `.state/last-digest-yt.json` with the full schema. Only add a video to `po
   "video_status": {
     "id1": {
       "title": "Video Title Here",
+      "uploader": "AI Daily Brief",
+      "published_date": "2026-03-15",
       "steps": {
         "transcript": true,
         "thumbnail": true,
