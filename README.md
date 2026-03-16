@@ -1,19 +1,42 @@
 # AI News Digest
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/osisdie/ai-claude-loop/actions/workflows/ci.yml/badge.svg)](https://github.com/osisdie/ai-claude-loop/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/osisdie/ai-claude-loop)](https://github.com/osisdie/ai-claude-loop/commits/main)
+
 Automated daily AI news digest powered by Claude Code's `/loop` feature. Posts bilingual digests (English + Traditional Chinese) to Slack `#update-vibe`.
 
 Two digest types:
 - **News Digest** — Web news across 6 AI categories
 - **YouTube Digest** — Video summaries from [@AIDailyBrief](https://www.youtube.com/@AIDailyBrief) with PDF exports
 
+## Demo
+
+![YouTube Digest Example](docs/screenshots/example-ai-news-digest-yt.png)
+
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in credentials:
+1. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Install system dependencies:
+
+   | Tool | Purpose | Install |
+   |------|---------|---------|
+   | `yt-dlp` | Fetch YouTube videos & metadata | `pip install yt-dlp` |
+   | `ffmpeg` | Audio extraction for Whisper | [ffmpeg.org](https://ffmpeg.org/download.html) |
+   | `google-chrome` | Headless PDF generation | [chrome](https://www.google.com/chrome/) |
+   | `b2` | Backblaze B2 CLI for uploads | `pip install b2` |
+
+3. Copy `.env.example` to `.env` and fill in credentials:
    ```bash
    cp .env.example .env
    ```
 
-2. Required environment variables:
+4. Required environment variables:
    | Variable | Purpose |
    |----------|---------|
    | `SLACK_BOT_TOKEN` | Slack Bot Token (`xoxb-...`) with `chat:write` scope |
@@ -24,7 +47,7 @@ Two digest types:
    | `B2_BUCKET_NAME` | B2 bucket name (e.g. `claw-dir`) |
    | `HF_TOKEN` | HuggingFace token (Whisper fallback for transcripts) |
 
-3. Invite your Slack bot to `#update-vibe`:
+5. Invite your Slack bot to `#update-vibe`:
    ```
    /invite @YourBotName
    ```
