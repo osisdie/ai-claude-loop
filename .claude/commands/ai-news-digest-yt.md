@@ -93,17 +93,17 @@ For each video with a successful transcript, YOU (Claude) will:
 
 4. Also create two combined digest files. **Each video section MUST include its thumbnail image** (use relative path). If the thumbnail file doesn't exist, omit the image line for that video.
 
-**`digest-yt/{{date}}/summary_en.md`** — All English summaries combined. Include publisher and date metadata below each video heading:
+**`digest-yt/{{date}}/summary_en.md`** — All English summaries combined. Use linked headings `## [Title](url)` so readers can click through to the video. Include publisher and date metadata below each heading:
 ```markdown
 # AI Daily Brief - YouTube Digest {{date}}
 
-## Video Title 1
+## [Video Title 1](https://youtube.com/watch?v=VIDEO_ID)
 ![Video Title 1](VIDEO_ID_thumb.jpg)
 *Uploader Name — Published: 2026-03-12 | Modified: 2026-03-13*
 
 2-3 sentence English summary...
 
-## Video Title 2
+## [Video Title 2](https://youtube.com/watch?v=VIDEO_ID)
 ![Video Title 2](VIDEO_ID_thumb.jpg)
 *Uploader Name — Published: 2026-03-12*
 
@@ -114,13 +114,13 @@ For each video with a successful transcript, YOU (Claude) will:
 ```markdown
 # AI Daily Brief - YouTube 摘要 {{date}}
 
-## Video Title 1
+## [Video Title 1](https://youtube.com/watch?v=VIDEO_ID)
 ![Video Title 1](VIDEO_ID_thumb.jpg)
 *Uploader Name — Published: 2026-03-12 | Modified: 2026-03-13*
 
 繁體中文摘要...
 
-## Video Title 2
+## [Video Title 2](https://youtube.com/watch?v=VIDEO_ID)
 ![Video Title 2](VIDEO_ID_thumb.jpg)
 *Uploader Name — Published: 2026-03-12*
 
