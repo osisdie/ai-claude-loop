@@ -6,7 +6,7 @@ Usage:
   python scripts/yt/fetch_recent_videos.py [--channel URL] [--hours 24] [--state PATH]
 
 Outputs JSON array to stdout:
-  [{"id": "abc123", "title": "Video Title", "upload_date": "20260311", "modified_date": "20260312"}, ...]
+  [{"id": "abc123", "title": "Video Title", "upload_date": "20260311", "modified_date": "20260312", "uploader": "AI Daily Brief"}, ...]
 """
 
 import argparse
@@ -29,7 +29,7 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
         "--playlist-items",
         f"1:{max_items}",
         "--print",
-        "%(id)s\t%(title)s\t%(upload_date)s\t%(modified_date)s\t%(thumbnail)s",
+        "%(id)s\t%(title)s\t%(upload_date)s\t%(modified_date)s\t%(thumbnail)s\t%(uploader)s",
         "--skip-download",
         f"{channel_url}/videos",
     ]
@@ -40,7 +40,7 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
 
     videos = []
     for line in result.stdout.strip().splitlines():
-        parts = line.split("\t", 4)
+        parts = line.split("\t", 5)
         if len(parts) >= 2:
             vid_id = parts[0]
             upload = parts[2] if len(parts) >= 3 else "NA"
@@ -48,6 +48,7 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
             # Treat modified_date as null if same as upload_date or unavailable
             if modified in ("NA", "", upload):
                 modified = None
+            uploader = parts[5] if len(parts) >= 6 and parts[5] != "NA" else None
             vid = {
                 "id": vid_id,
                 "title": parts[1],
@@ -56,6 +57,7 @@ def fetch_channel_videos(channel_url: str, max_items: int = 10) -> list[dict]:
                 "thumbnail": parts[4]
                 if len(parts) >= 5 and parts[4] != "NA"
                 else f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg",
+                "uploader": uploader,
             }
             videos.append(vid)
     return videos
