@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
-[![CI](https://github.com/osisdie/ai-claude-loop/actions/workflows/ci.yml/badge.svg)](https://github.com/osisdie/ai-claude-loop/actions)
+[![Lint](https://github.com/osisdie/ai-claude-loop/actions/workflows/lint.yml/badge.svg)](https://github.com/osisdie/ai-claude-loop/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/osisdie/ai-claude-loop)](https://github.com/osisdie/ai-claude-loop/commits/main)
 
 Automated daily AI news digest powered by Claude Code's `/loop` feature. Posts bilingual digests (English + Traditional Chinese) to Slack `#update-vibe`.
@@ -103,12 +103,12 @@ digest-yt/YYYY-MM-DD/           — YT digest outputs (gitignored)
 
 | Emoji | Category |
 |-------|----------|
-| :brain: | LLM / Foundation Models |
-| :package: | AI Products & Applications |
-| :scales: | AI Policy & Regulation |
-| :microscope: | AI Research Papers |
-| :briefcase: | Industry & Business |
-| :unlock: | Open Source AI |
+| 🧠 | LLM / Foundation Models |
+| 📦 | AI Products & Applications |
+| ⚖️ | AI Policy & Regulation |
+| 🔬 | AI Research Papers |
+| 💼 | Industry & Business |
+| 🔓 | Open Source AI |
 
 ## Limitations
 
