@@ -69,6 +69,7 @@ For each video with a successful transcript, YOU (Claude) will:
 2. Write a bilingual summary with these sections:
    - **English summary**: 2-3 sentences covering the key points
    - **繁體中文摘要**: 2-3 sentences in Traditional Chinese covering the same points
+   - **Tags**: 3-5 lowercase English topic tags derived from the transcript content. Tags should cover companies (e.g. nvidia, openai), technologies (e.g. inference, rag), countries/regions if relevant, and categories (e.g. policy, research, product, open-source). Keep tags short and specific.
 
 3. Save each summary as markdown to `digest-yt/{{date}}/VIDEO_ID.md` with this format. Convert `upload_date` from YYYYMMDD → YYYY-MM-DD for display. Use `uploader` from fetch output for the **Publisher** field (fall back to "AI Daily Brief" if null). Only include the **Last Modified** line if `modified_date` is present and different from `upload_date`:
 
@@ -81,6 +82,7 @@ For each video with a successful transcript, YOU (Claude) will:
 **Source**: [Watch on YouTube](https://youtube.com/watch?v=VIDEO_ID)
 **Published**: 2026-03-12
 **Last Modified**: 2026-03-13
+**Tags**: nvidia, inference, groq, openai, copyright
 
 ## English Summary
 
@@ -176,10 +178,11 @@ Build a Slack mrkdwn message and post it. Use this exact format:
 *:movie_camera: Video Title Here*
 > :link: <https://youtube.com/watch?v=VIDEO_ID|Watch on YouTube>
 > :studio_microphone: Uploader Name · :calendar: 2026-03-15
+> :label: `nvidia` `inference` `groq` `openai` `copyright`
 >
-> :us: 2-3 sentence English summary...
+> *EN* 2-3 sentence English summary...
 >
-> :taiwan: 繁體中文摘要，2-3句話...
+> *繁中* 繁體中文摘要，2-3句話...
 
 (repeat for each video)
 
@@ -192,6 +195,7 @@ _Compiled from @AIDailyBrief by Claude Code :zap:_
 
 **Format rules:**
 - Video titles stay in English
+- Each video gets a `:label:` line with 3-5 topic tags in backtick format (e.g. `` `nvidia` `inference` `openai` ``)
 - Each video gets both EN and zh-TW summaries inline
 - If PDFs are unavailable, omit the PDF Downloads section
 - Keep total message under 3800 characters; if longer, split into 2 messages
