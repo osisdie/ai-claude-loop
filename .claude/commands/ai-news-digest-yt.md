@@ -163,7 +163,7 @@ python scripts/yt/upload_b2.py "digest-yt/{{date}}/summary_en_$(date +%Y%m%d).pd
 python scripts/yt/upload_b2.py "digest-yt/{{date}}/summary_zh-tw_$(date +%Y%m%d).pdf" --prefix "ai-digest-yt/{{date}}"
 ```
 
-Capture the download URLs from stdout. If upload fails, continue without links.
+Capture the **full presigned URLs** (including the `?Authorization=...` query parameter) from stdout. The B2 bucket is private, so bare URLs without the auth token will return 401. Always use the complete presigned URL in Slack links. If upload fails, continue without links.
 
 After successful uploads, update `video_status[VIDEO_ID].steps.b2_upload = true` for all videos, then save state. Skip if already `true` from Step 0.
 
@@ -186,9 +186,9 @@ Build a Slack mrkdwn message and post it. Use this exact format:
 
 (repeat for each video)
 
-:page_facing_up: *PDF Downloads*
-> :small_blue_diamond: <B2_URL|summary_en_YYYYMMDD.pdf>
-> :small_blue_diamond: <B2_URL|summary_zh-tw_YYYYMMDD.pdf>
+:page_facing_up: *PDF Downloads* _(links expire in 7 days)_
+> :small_blue_diamond: <B2_PRESIGNED_URL|summary_en_YYYYMMDD.pdf>
+> :small_blue_diamond: <B2_PRESIGNED_URL|summary_zh-tw_YYYYMMDD.pdf>
 
 _Compiled from @AIDailyBrief by Claude Code :zap:_
 ```
